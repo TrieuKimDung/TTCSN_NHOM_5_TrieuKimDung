@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Kiểm duyệt bài viết</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+    }
+    .post {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .post h3 {
+      color: #2c66b8;
+    }
+    .post p {
+      color: #444;
+      margin-top: 10px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .actions button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .approve {
+      background-color: #4caf50;
+      color: white;
+    }
+    .reject {
+      background-color: #f44336;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="post">
+    <h3>[Tiêu đề bài viết]</h3>
+    <p>Nội dung bài viết đang chờ kiểm duyệt...</p>
+    <div class="actions">
+      <button class="approve">Duyệt</button>
+      <button class="reject">Từ chối</button>
+    </div>
+  </div>
+</body>
+</html>

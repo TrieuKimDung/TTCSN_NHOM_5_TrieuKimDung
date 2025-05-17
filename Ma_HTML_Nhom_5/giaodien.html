@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diễn đàn sinh viên</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f0f4ff;
+            justify-content: space-between; /* Đảm bảo footer ở dưới cùng */
+        }
+
+        .topbar {
+            background-color: #063c98;
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar img {
+            max-width: 100%;
+            height: auto;
+            width: 35px;
+            margin-left: 10px;
+        }
+
+        .search {
+            background-color: white;
+            width: 100%;
+            max-width: 300px;
+            padding: 7px 35px;
+            border-radius: 50px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .search_box {
+            flex: 1;
+            outline: none;
+            border: none;
+            padding: 5px;
+            background-color: transparent;
+        }
+
+        .b_search {
+            background-color: #4c8ef7;
+            border: none;
+            color: white;
+            padding: 7px 10px;
+            border-radius: 50px;
+            margin-left: 20px;
+        }
+
+        .topbar .box {
+            width: 90px;
+            height: 40px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contain {
+            display: flex;
+            gap: 10px;
+        }
+
+        .box:hover {
+            background-color: #4c8ef7;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
+        }
+
+        .box span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .banner {
+            width: 100%;
+            height: 400px;
+            background-image: url('https://i.imgur.com/5Xo8RAO.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            position: relative;
+            background: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 30px;
+            z-index: 1;
+        }
+
+        .ava {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .ava img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #ffffff;
+            object-fit: cover;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            background-color: #fff;
+        }
+
+        .ava img:hover {
+            transform: scale(1.06);
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav a {
+            position: relative;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 15px;
+            padding: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            width: 0%;
+            height: 2px;
+            background-color: #4c8ef7;
+            transition: width 0.3s ease;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .nav a:hover {
+            color: #4c8ef7;
+        }
+
+        .nav a:not(:last-child)::before {
+            content: "|";
+            position: absolute;
+            right: -20px;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* phânf sau */
+        .menu {
+            display: flex;
+            background-color: white;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 2px solid #ccc;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .menu ul {
+            display: flex;
+            justify-content: space-between;
+            /* dàn đều các mục */
+            width: 100%;
+            list-style-type: none;
+            background-color: pink;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu li {
+            flex: 1;
+            /* mỗi mục chiếm đều không gian */
+            text-align: center;
+            line-height: 40px;
+            position: relative;
+            background-color: #2c66b8;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .menu a:hover {
+            background-color: rgb(160, 204, 248);
+            color: #1207e8;
+        }
+
+        .menu .sub {
+            position: absolute;
+            display: none;
+        }
+
+        .menu li:hover .sub {
+            display: block;
+        }
+
+        .main {
+            display: flex;
+            margin: 20px;
+            gap: 20px;
+            overflow: hidden;
+            /* Mặc định không cuộn */
+            transition: all 0.3s;
+        }
+
+        .left,
+        .right {
+            flex: 1;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .center {
+            flex: 2;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            width: 50%;
+            margin: 0 20px;
+        }
+
+        .main .left :hover {
+            overflow: auto;
+        }
+
+        .main .right :hover {
+            overflow: auto;
+        }
+
+        .main .center :hover {
+            overflow: auto;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-image: url('https://i.imgur.com/YOJrM3J.png');
+            background-size: cover;
+            background-position: center;
+            margin: auto;
+        }
+
+        .profile-name {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .post-area {
+            background-color: #f0f4ff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: 0.3s ease;
+        }
+
+        .post-area:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-area input {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .post-area button {
+            padding: 10px;
+            background-color: #2c66b8;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s;
+        }
+
+        .post-area button:hover {
+            background-color: #1a4a90;
+            transform: translateY(-1px);
+        }
+
+        .box-link {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f0f4ff;
+            border-left: 5px solid #2c66b8;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .box-link:hover {
+            transform: translateX(5px);
+            background-color: #e6eeff;
+        }
+
+        .center-title {
+            color: #2c66b8;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .post {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .post:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+            border: 2px solid #2c66b8;
+        }
+
+        .post-username {
+            font-weight: bold;
+            color: #2c66b8;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .post-text {
+            margin: 10px 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .post-img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 10px 0;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+            color: #888;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .post-actions i:hover {
+            color: #2c66b8;
+            cursor: pointer;
+            transform: scale(1.2);
+            transition: 0.2s ease;
+        }
+
+        .news-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .news-header {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .icon-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon {
+            cursor: pointer;
+        }
+
+        /* Căn chỉnh phần BXH */
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            /* Xếp các ảnh theo chiều dọc */
+            gap: 10px;
+            /* Khoảng cách giữa các ảnh */
+            align-items: center;
+            /* Căn giữa các ảnh */
+            margin-top: 20px;
+        }
+
+        .ranking-item {
+            position: relative;
+            width: 200px;
+            height: auto;
+            text-align: center;
+        }
+
+        .ranking-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 10%;
+            object-fit: cover;
+            /* Đảm bảo ảnh vừa vặn với hình tròn */
+            transition: transform 0.3s ease-in-out;
+            /* Hiệu ứng khi hover */
+        }
+
+        /* Hiệu ứng khi hover ảnh */
+        .ranking-item:hover .ranking-avatar {
+            transform: scale(1.1);
+            /* Phóng to ảnh khi hover */
+        }
+
+        /* Hiệu ứng khi hover ảnh */
+        .ranking-item:hover {
+            cursor: pointer;
+        }
+
+        /* Nút bình chọn */
+        .vote-button {
+            background-color: #2c66b8;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .vote-button:hover {
+            background-color: #1d4c8d;
+            /* Màu khi hover */
+        }
+
+        .news-item {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            /* Tạo đường kẻ ngăn cách giữa các bài báo */
+            padding-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            /* Thêm hiệu ứng chuyển động */
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            /* Đẩy nhẹ lên khi hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Thêm bóng đổ */
+        }
+
+        .news-image {
+            width: 70px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+            /* Thêm hiệu ứng cho hình ảnh */
+        }
+
+        .news-image:hover {
+            transform: scale(1.1);
+            /* Phóng to hình ảnh khi hover */
+        }
+
+        .news-content {
+            flex-grow: 1;
+        }
+
+        .news-content strong {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            transition: color 0.3s ease;
+            /* Thêm hiệu ứng cho màu chữ */
+        }
+
+        .news-content strong:hover {
+            color: #007BFF;
+            /* Đổi màu chữ khi hover */
+        }
+
+        .news-description {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+            /* Thêm hiệu ứng cho màu chữ */
+            /*Hiện tối đa 4 dòng, dòng thứ 5 trở đi sẽ ẩn + hiện dấu ...*/
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            /* Giới hạn 4 dòng */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-description:hover {
+            color: #444;
+            /* Làm cho màu chữ đậm hơn khi hover */
+        }
+
+        /* Đảm bảo body chiếm toàn bộ chiều cao */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        /* footer.css */
+        /* Footer styles */
+        .haui-footer {
+            background-color: #002147;
+            color: #ffffff;
+            padding: 40px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 220px;
+            margin-bottom: 20px;
+        }
+
+        .footer-column h3,
+        .footer-column h4 {
+            margin-bottom: 15px;
+        }
+
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-column a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons a {
+            color: #ffffff;
+            margin-right: 15px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: #ffcc00;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            border-top: 1px solid #444;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <div class="topbar">
+        <div class="logo">
+            <img src="https://cdn.haitrieu.com/wp-content/uploads/2021/10/Logo-DH-Cong-nghiep-Ha-Noi.png" alt="" style="max-width: 100%;
+  height: auto;">
+            <h2 style="color: white; font-size: 9px; text-align:center; margin-left: 10px;">HAUI</h2>
+        </div>
+
+        <div class="search">
+            <input type="text" class="search_box" placeholder="Tìm kiếm .......">
+            <button class="b_search"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="contain">
+            <div class="box"><span>Đăng ký</span></div>
+            <div class="box"><span onclick="window.location.href='logIn.html'" >Đăng nhập</span></div>
+        </div>
+    </div>
+
+    <div><img
+            src="https://media.edunet.vn/Media/News/images/%C4%90%E1%BA%A1i%20h%E1%BB%8Dc%20C%C3%B4ng%20nghi%E1%BB%87p%20H%C3%A0%20N%E1%BB%99i%20-%20HAUI(1).png"
+            alt="" class="banner"></div>
+    <header>
+        <div class="ava"><img
+                src="https://hoanghamobile.com/tin-tuc/wp-content/uploads/2024/10/tai-anh-meo-ngau-thumbnail.jpg"
+                alt=""></div>
+        <div class="nav">
+            <a href="" style="color: #007BFF;">Trang chủ</a>
+            <a href="">Tin nhắn</a>
+            <a href="">Thông báo</a>
+            <a href="">Liên hệ</a>
+            <a href="">Bài đăng</a>
+            <a href="">Thông tin</a>
+            <a href="">Cá nhân</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <div class="left" class="scroll-content ">
+            <div class="post-area">
+                <input type="text" placeholder="Bạn đang nghĩ gì?">
+                <button onclick="window.location.href='post.html'">POST 🚀</button>
+            </div>
+            <div class="box-link">Tài liệu học tập</div>
+            <div class="box-link">Đăng kí CLB</div>
+            <div class="box-link">Giới thiệu việc làm</div>
+            <div
+                style="margin-top: 20px; font-weight: bold; background-color: #2c66b8; color: white; padding: 5px; text-align: center;">
+                BXH SINH VIÊN ĐƯỢC YÊU THÍCH NHẤT</div>
+            <div class="ranking-list">
+                <div class="ranking-item">
+                    <img src="legiabao.jpg"
+                        alt="Avatar" class="ranking-avatar">
+                    <button class="vote-button">Bình Chọn</button> <!-- Nút bình chọn dưới ảnh -->
+                </div>
+                <div class="ranking-item">
+                    <img src="nguyenpa.jpg"
+                        alt="Avatar" class="ranking-avatar">
+                    <button class="vote-button">Bình Chọn</button> <!-- Nút bình chọn dưới ảnh -->
+                </div>
+                <div class="ranking-item">
+                    <img src="taviethung.jpg"
+                        alt="Avatar" class="ranking-avatar">
+                    <button class="vote-button">Bình Chọn</button> <!-- Nút bình chọn dưới ảnh -->
+                </div>
+            </div>
+        </div>
+
+        <div class="center" class="scroll-content ">
+            <h3 class="center-title" class="scroll-content ">📸 Góc Tâm Sự Sinh Viên</h3>
+
+            <div class="post">
+                <div class="post-header">
+                    <img src="https://kenh14cdn.com/203336854389633024/2024/5/23/photo-5-1716435950616841938656.png"
+                        alt="avatar" class="post-avatar">
+                    <div>
+                        <div class="post-username">Dung Kim Triệu</div>
+                        <div class="post-time">2 giờ trước</div>
+                    </div>
+                </div>
+                <div class="post-text"> 🎉 Chúc mừng thành tích của sinh viên HaUI tại Kỳ thi Olympic Hoá học Sinh viên
+                    toàn quốc lần thứ XII năm 2025, với 3 giải ba, 7 giải khuyến khích, giải Tập thể xuất sắc bảng C và
+                    giải Tập thể xuất sắc bảng B 🎉
+                </div>
+                <img src="hoahoc.jpg"
+                    class="post-img" alt="ảnh bài viết">
+                <div class="post-actions">
+                    <i class="fa-solid fa-heart"></i>
+                    <i class="fa-solid fa-comment"></i>
+                    <i class="fa-solid fa-share"></i>
+                </div>
+            </div>
+
+            <div class="post">
+                <div class="post-header">
+                    <img src="https://ddk.1cdn.vn/thumbs/900x600/2024/11/19/untitled-7-1-.jpg" alt="avatar"
+                        class="post-avatar">
+                    <div>
+                        <div class="post-username">Hồng Oanh Vũ</div>
+                        <div class="post-time">1 giờ trước</div>
+                    </div>
+                </div>
+                <div class="post-text">Robocon cấp trường gọi tên DCN - SMAE 1
+                </div>
+                <img src="robocon.jpg"
+                    class="post-img" alt="ảnh tâm sự">
+                <div class="post-actions">
+                    <i class="fa-solid fa-heart"></i>
+                    <i class="fa-solid fa-comment"></i>
+                    <i class="fa-solid fa-share"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="right" class="scroll-content ">
+            <div class="news-item">
+                <img src="https://www.haui.edu.vn//media/106/t106428.jpg" alt="news-image" class="news-image">
+                <div class="news-content">
+                    <strong>🎓 Miss & Mister HaUI 2025: Hội tụ vẻ đẹp, tài năng và bản lĩnh</strong>
+                    <p class="news-description">
+                        “Nam thanh, nữ tú” Trường Đại học Công nghiệp Hà Nội (HaUI) đã có một đêm tỏa sáng rạng rỡ trong
+                        chung kết cuộc thi “Sinh viên thanh lịch - tài năng Miss & Mister HaUI 2025”. Giải thưởng cao
+                        nhất đã được trao cho thí sinh Đoàn Thị Hương - Trường Ngoại ngữ - Du lịch và Lê Gia Bảo -
+                        Trường Điện - Điện tử.
+                    </p>
+                </div>
+            </div>
+            <div class="news-item">
+                <img src="https://www.haui.edu.vn//media/106/t106388.jpg" alt="news-image" class="news-image">
+                <div class="news-content">
+                    <strong>🎓 Tuổi trẻ HaUI gieo hạt giống tình người tại “Cầu vồng nhân ái năm 2025”</strong>
+                    <p class="news-description">
+                        “Mỗi giọt máu cho đi, một cuộc đời ở lại”. Hiến máu là một nghĩa cử cao đẹp, thể hiện lòng nhân
+                        ái và trách nhiệm đối với xã hội, với cộng đồng, gieo thêm những hạt giống tình người trong cuộc
+                        sống và tô đẹp thêm truyền thống tương thân thương ái của dân tộc Việt Nam.
+                    </p>
+                </div>
+            </div>
+            <div class="news-item">
+                <img src="https://www.haui.edu.vn//media/106/t106485.jpg" alt="news-image" class="news-image">
+                <div class="news-content">
+                    <strong>🎓 HaUI mở rộng, nâng tầm hợp tác với đối tác Hoa Kỳ </strong>
+                    <p class="news-description">
+                        “Hơn 30 năm qua kể từ khi Việt Nam và Hoa Kỳ chính thức thiết lập quan hệ ngoại giao vào ngày
+                        12-7-1995; xác lập quan hệ đối tác toàn diện vào ngày 25-7-2013, quan hệ Việt Nam - Hoa Kỳ đã
+                        đạt những bước phát triển toàn diện, thực chất, ngày càng đi vào chiều sâu, đóng góp tích cực
+                        cho an ninh, hòa bình, hợp tác, phát triển tại khu vực và trên thế giới
+                    </p>
+                </div>
+            </div>
+            <div class="news-item">
+                <img src="https://www.haui.edu.vn//media/106/t106675.jpg" alt="news-image" class="news-image">
+                <div class="news-content">
+                    <strong>HaUI đẩy mạnh hợp tác với Sở Khoa học và Công nghệ Thành phố Hà Nội</strong>
+                    <p class="news-description">
+                        “Chiều ngày 18/4, Trường Đại học Công nghiệp Hà Nội (HaUI) đã có buổi đón tiếp và làm việc với
+                        đoàn công tác của Sở Khoa học và Công nghệ Thành phố Hà Nội để thảo luận, định hướng chiến lược
+                        phát triển khoa học và công nghệ của Thủ đô.
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="haui-footer">
+        <div class="footer-container">
+            <!-- Thông tin trường -->
+            <div class="footer-column">
+                <h3>Trường Đại học Công nghiệp Hà Nội</h3>
+                <p>Địa chỉ: Số 298 Cầu Diễn, Bắc Từ Liêm, Hà Nội</p>
+                <p>Điện thoại: (024) 37655 121</p>
+                <p>Email: dhcnhn@haui.edu.vn</p>
+            </div>
+            <!-- Liên kết nhanh -->
+            <div class="footer-column">
+                <h4>Liên kết nhanh</h4>
+                <ul>
+                    <li><a href="#">Giới thiệu</a></li>
+                    <li><a href="#">Tuyển sinh</a></li>
+                    <li><a href="#">Đào tạo</a></li>
+                    <li><a href="#">Nghiên cứu khoa học</a></li>
+                </ul>
+            </div>
+
+            <!-- Mạng xã hội -->
+            <div class="footer-column">
+                <h4>Kết nối với chúng tôi</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bản quyền -->
+        <div class="footer-bottom">
+            &copy; 2025 Trường Đại học Công nghiệp Hà Nội. All rights reserved.
+        </div>
+    </footer>
+</body>
+
+</html>
